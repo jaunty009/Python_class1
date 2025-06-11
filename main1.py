@@ -1,35 +1,57 @@
-# import requests
+# from fastapi import FastAPI
 
-# # The API endpoint (no body needed, just query params)
-# url = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
-# params = {"t": "Arsenal"}  # Query parameter
+# app = FastAPI()
 
-# response = requests.get(url, params=params)
+# @app.get("/won")
+# def read_root():
+#     return {"message": "Hello World"}
 
-# if response.status_code == 200:
-#     data = response.json()
-#     print(data)  # Prints team data for Arsenal
-#     user_input = input(idLeague) 
-# else:
-#     print(f"Error: {response.status_code}")
+# @app.post("/items/")
+# async def create_item(first_name, last_name, idLeague):
+    
+#  url = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
+#     params = {"t": "Arsenal"}
+#     response = requests.get(url, params=params)
+
+#     if response.status_code == 200:
+#         result = response.json()
+#         # user_input = input("Enter league name to get its ID: ")
+#         team = result['teams'][0]
+#         if user_input.lower() in team['strLeague2'].lower():
+#             print(team['idLeague2'])
+#         else:
+#             print("League not found.")
+#     ph = {"name": first_name + last_name, "League":}
+#     return ph
 
 
 
+from fastapi import FastAPI, Form
 import requests
 
-url = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
-params = {"t": "Arsenal"}  # Search for Arsenal
+app = FastAPI()
 
-response = requests.get(url, params=params)  # Timeout after 10 sec
-response.raise_for_status()  # Raise an error for bad status codes (4xx/5xx)
+@app.get("/won")
+def read_root():
+    return {"message": "Hello World"}
 
-data = response.json()
+@app.post("/items/")
+async def create_item(first_name, last_name, league_name):
+    url = "https://www.thesportsdb.com/api/v1/json/123/searchteams.php"
+    params = {"t": "Arsenal"}
+    response = requests.get(url, params=params)
 
-if data.get('teams'):
-    print("All Leagues for Arsenal:")
-    for team in data['teams']:
-        id_league = team.get('idLeague3')
-        league_name = team.get('strLeague3', 'Unknown League')
-        print(f"League ID: {id_league} | League Name: {league_name}")
-else:
-    print("No team data found for Arsenal.")
+    if response.status_code == 200:
+        result = response.json()
+        team = result['teams'][0]
+
+        if league_name.lower() in team.get('strLeague2', '').lower():
+            league_id = team.get('idLeague2', '')
+            print(team['idLeague2'])
+        else:
+            print("League not found")
+    else:
+        print("API call failed")
+
+    ph = {"name": first_name + last_name, "League": league_id}
+    return ph
