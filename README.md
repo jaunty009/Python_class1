@@ -1,2 +1,14 @@
-# Python_class1
-My project in github
+app = fastapi
+->in get = app.get(/won)
+->runs message hello world
+->now in post = app.post(/items)
+->async data to create items in field
+->url = API is given
+-> response = requests.get(url, params) to get parameters from url
+-> if status is 200 result is requested in json 
+-> league name is given in the input. what ever format is given by the user it chganges to lower by itself.
+-> here we can get data from api using team.get 
+-> if not print error
+->to retreive the required data from api
+-> if no data found api calling failed
+-> the output format is returned
